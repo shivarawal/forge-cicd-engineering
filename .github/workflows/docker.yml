@@ -1,0 +1,60 @@
+name: Docker Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      registry:
+        required: false
+        type: string
+        default: docker.io
+
+      image-name:
+        required: true
+        type: string
+
+      image-tag:
+        required: false
+        type: string
+        default: latest
+
+      context:
+        required: false
+        type: string
+        default: .
+
+      dockerfile:
+        required: false
+        type: string
+        default: Dockerfile
+
+      push:
+        required: false
+        type: boolean
+        default: false
+
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+
+      DOCKER_PASSWORD:
+        required: true
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivarawal/forge-cicd-engineering/.github/actions/setup@main
+
+      - uses: shivarawal/forge-cicd-engineering/.github/actions/docker@main
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          image-name: ${{ inputs.image-name }}
+          image-tag: ${{ inputs.image-tag }}
+          context: ${{ inputs.context }}
+          dockerfile: ${{ inputs.dockerfile }}
+          push: ${{ inputs.push }}
