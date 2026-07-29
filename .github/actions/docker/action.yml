@@ -64,14 +64,7 @@ runs:
       with:
         context: ${{ inputs.context }}
         file: ${{ inputs.dockerfile }}
-        push: ${{ inputs.push }}
-        tags: ${{ inputs.registry }}/${{ inputs.image-name }}:${{ inputs.image-tag }}
-        
-    - name: Push Docker Image
-      if: ${{ inputs.push == 'true' }}
-      shell: bash
-      run: |
-        docker push "${{ inputs.registry }}/${{ inputs.image-name }}:${{ inputs.image-tag }}"
+        push: ${{ inputs.push == 'true' }}
 
     - id: meta
       shell: bash
