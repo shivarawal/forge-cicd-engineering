@@ -1,0 +1,29 @@
+name: Setup Environment
+description: Prepare the GitHub Actions runner for Forge workflows
+
+runs:
+  using: composite
+
+  steps:
+    - name: Display Runner Information
+      shell: bash
+      run: |
+        echo "========== Runner =========="
+        echo "OS: $RUNNER_OS"
+        echo "Architecture: $RUNNER_ARCH"
+        echo "Runner: $RUNNER_NAME"
+
+    - name: Display Repository Information
+      shell: bash
+      run: |
+        echo "========== Repository =========="
+        echo "Repository: $GITHUB_REPOSITORY"
+        echo "Branch: $GITHUB_REF_NAME"
+        echo "Actor: $GITHUB_ACTOR"
+
+    - name: Display Working Directory
+      shell: bash
+      run: |
+        echo "========== Working Directory =========="
+        pwd
+        ls -la
