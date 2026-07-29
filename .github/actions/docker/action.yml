@@ -60,13 +60,13 @@ runs:
         password: ${{ inputs.password }}
 
     - name: Build Docker Image
-      shell: bash
-      run: |
-        docker build \
-          -f "${{ inputs.dockerfile }}" \
-          -t "${{ inputs.registry }}/${{ inputs.image-name }}:${{ inputs.image-tag }}" \
-          "${{ inputs.context }}"
-
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}
+        push: ${{ inputs.push }}
+        tags: ${{ inputs.registry }}/${{ inputs.image-name }}:${{ inputs.image-tag }}
+        
     - name: Push Docker Image
       if: ${{ inputs.push == 'true' }}
       shell: bash
