@@ -1,0 +1,12 @@
+name: Hello Forge
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say Hello
+        run: echo "Welcome to Forge CI/CD Platform!"
