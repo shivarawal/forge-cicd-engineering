@@ -59,6 +59,15 @@ runs:
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
 
+    - name: Generate Docker metadata
+      uses: docker/metadata-action@v5
+      id: meta
+      with:
+        images: ${{ inputs.registry }}/${{ inputs.image-name }}
+        tags: |
+          type=raw,value=${{ inputs.image-tag }}
+          type=sha256,format=long
+
     - name: Build Docker Image
       uses: docker/build-push-action@v5
       with:
