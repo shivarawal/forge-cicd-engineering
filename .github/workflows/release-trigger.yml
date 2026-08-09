@@ -11,14 +11,15 @@ jobs:
   release:
     permissions:
       contents: write
+
     uses: ./.github/workflows/release.yml
 
     with:
       image-name: shivarawal/forge-demo
       image-tag: ${{ github.ref_name }}
       registry: docker.io
-      context: .
-      dockerfile: Dockerfile
+      context: ./examples/docker/nginx-app
+      dockerfile: ./examples/docker/nginx-app/Dockerfile
 
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
