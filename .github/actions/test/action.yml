@@ -1,15 +1,24 @@
-name: test workflow
+name: setup environment for test
+description: This workflow sets up the environment for testing purposes.
 
-on:
-  workflow_dispatch:
+runs:
+  using: composite
 
-jobs:
-  test-action:
-    runs-on: ubuntu-latest
+  steps:
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24
 
-      - name: Run test action
-        uses: ./.github/actions/test
+    - name: Check Node version
+      shell: bash
+      run: node --version
+
+    - name: Check npm version
+      shell: bash
+      run: npm --version
+
+    - name: Install dependencies
+      shell: bash
+      run: npm install

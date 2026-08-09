@@ -9,7 +9,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Runner
-        uses: ./.github/actions/setup
+      - name: Setup and install dependencies
+        uses: ./.github/actions/test
+
+      - name: Run tests
+        shell: bash
+        run: npm test
