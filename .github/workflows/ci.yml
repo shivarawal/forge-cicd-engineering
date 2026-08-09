@@ -2,7 +2,12 @@ name: Forge CI
 
 on:
   workflow_dispatch:
+
   workflow_call:
+    inputs:
+      app-path:
+        required: true
+        type: string
 
 jobs:
   ci:
@@ -15,9 +20,9 @@ jobs:
       - name: Setup and install dependencies
         uses: ./.github/actions/test
         with:
-          path: examples/nodejs
+          path: ${{ inputs.app-path }}
 
       - name: Run tests
         shell: bash
-        working-directory: examples/nodejs
+        working-directory: ${{ inputs.app-path }}
         run: npm test
