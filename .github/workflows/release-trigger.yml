@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/release.yml
 
     with:
-      image-name: shivarawal/forge-demo
+      image-name: shivarawal/forge-demo-app
       image-tag: ${{ github.ref_name }}
       registry: docker.io
       context: ./examples/docker/nginx-app
