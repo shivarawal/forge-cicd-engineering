@@ -1,0 +1,9 @@
+name: test-reusable-workflow
+on:
+  workflow_dispatch:
+
+    jobs:
+      test-reusable-workflow:
+        uses: shivarawal/forge-cicd-engineering/.github/workflows/ci.yml@main
+        with:
+          app-path: examples/nodejs/
