@@ -1,0 +1,80 @@
+name: Reusable Release Workflow
+
+on:
+  workflow_call:
+
+    inputs:
+      image-name:
+        required: true
+        type: string
+
+      image-tag:
+        required: true
+        type: string
+
+      registry:
+        required: false
+        type: string
+        default: docker.io
+
+      context:
+        required: false
+        type: string
+        default: .
+
+      dockerfile:
+        required: false
+        type: string
+        default: Dockerfile
+
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+
+      DOCKER_PASSWORD:
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.dockerfile }}
+          push: true
+          tags: |
+            ${{ inputs.registry }}/${{ inputs.image-name }}:${{ inputs.image-tag }}
+
+  github-release:
+    name: Create GitHub Release
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ inputs.image-tag }}" \
+            --title "Release ${{ inputs.image-tag }}" \
+            --generate-notes

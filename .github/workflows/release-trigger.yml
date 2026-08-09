@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+  workflow_dispatch:
+
+jobs:
+  release:
+    uses: ./.github/workflows/release.yml
+
+    with:
+      image-name: shivarawal/forge-demo
+      image-tag: ${{ github.ref_name }}
+      registry: docker.io
+      context: .
+      dockerfile: Dockerfile
+
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
