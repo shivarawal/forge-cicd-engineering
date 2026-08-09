@@ -14,7 +14,10 @@ jobs:
 
       - name: Setup and install dependencies
         uses: ./.github/actions/test
+        with:
+          path: examples/nodejs
 
       - name: Run tests
         shell: bash
+        working-directory: examples/nodejs
         run: npm test
