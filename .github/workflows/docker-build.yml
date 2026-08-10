@@ -1,0 +1,66 @@
+name: Forge Docker Build
+
+on:
+  workflow_call:
+
+    inputs:
+      image-name:
+        required: true
+        type: string
+
+      image-tag:
+        required: true
+        type: string
+
+      registry:
+        required: false
+        type: string
+        default: docker.io
+
+      context:
+        required: false
+        type: string
+        default: .
+
+      dockerfile:
+        required: false
+        type: string
+        default: Dockerfile
+
+      push:
+        required: false
+        type: boolean
+        default: false
+
+    secrets:
+      DOCKER_USERNAME:
+        required: false
+
+      DOCKER_PASSWORD:
+        required: false
+
+jobs:
+
+  docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Forge environment
+        uses: shivarawal/forge-cicd-engineering/.github/actions/setup@v1
+
+      - name: Build Docker image
+        uses: shivarawal/forge-cicd-engineering/.github/actions/docker@v1
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          image-name: ${{ inputs.image-name }}
+          image-tag: ${{ inputs.image-tag }}
+          context: ${{ inputs.context }}
+          dockerfile: ${{ inputs.dockerfile }}
+          push: ${{ inputs.push }}
