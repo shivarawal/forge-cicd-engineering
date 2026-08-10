@@ -28,6 +28,12 @@ echo "Calculating next version..."
 
 VERSION_OUTPUT=$(./scripts/calculate-version.sh)
 
+LATEST_TAG=$(
+  git tag --sort=-v:refname |
+  grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' |
+  head -1
+)
+
 echo
 echo "${VERSION_OUTPUT}"
 
@@ -48,8 +54,9 @@ echo
 echo "======================================"
 echo " Release Information"
 echo "======================================"
-echo "Version : ${NEXT_VERSION}"
-echo "Tag     : ${NEXT_TAG}"
+echo "Previous Release : ${LATEST_TAG}"
+echo "Version          : ${NEXT_VERSION}"
+echo "Tag              : ${NEXT_TAG}"
 echo "======================================"
 
 # --------------------------------------------------
@@ -82,8 +89,11 @@ TEMP_CHANGELOG=$(mktemp)
   echo "### Changes"
   echo
 
-  git log "${NEXT_TAG}..HEAD" \
-    --pretty=format:"- %s" 2>/dev/null || true
+  # IMPORTANT:
+  # Use the previous release tag because NEXT_TAG
+  # does not exist yet.
+  git log "${LATEST_TAG}..HEAD" \
+    --pretty=format:"- %s"
 
   echo
   echo
