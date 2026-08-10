@@ -1,0 +1,6 @@
+{
+  "branches": ["main"],
+  "tagPrefix": "v",
+  "versionFile": "VERSION",
+  "changelogFile": "CHANGELOG.md"
+}
