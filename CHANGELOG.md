@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 - 2026-08-10
+
+### Changes
+
+- feat: add reusable Docker build workflow
+
+
 ## 1.1.0 - 2026-08-10
 
 ### Changes
